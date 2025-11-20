@@ -1,3 +1,34 @@
+let stats = (function (){
+  let num;
+  // Caching HTML Elements
+  let el = document.getElementById("stats");
+  let template = el.querySelector("#stats-template").innerHTML;
+  let wrapper = el.querySelector("#stats-wrapper");
+
+  // Subscribe to pubsub peopleChanged event
+  events.on("peopleChanged", setNum);
+
+  // Render Function
+  function _render(){
+    wrapper.innerHTML = Mustache.render(template, {num_display: num});
+  }
+  _render(); // Initial render
+
+  // Logic Function
+  function setNum(num_people){
+    num = num_people;
+    _render();
+  }
+  function destroy(){
+    el.remove();
+    events.off("peopleChanged", setNum);
+  }
+  return {setNum, destroy};
+
+})();
+
+
+
 let people = (function () { // IIFE that modularzes code around people
 
     let people = ["Will", "Sarah"]; // Initial data state
@@ -16,6 +47,8 @@ let people = (function () { // IIFE that modularzes code around people
     // Rendering
     function _render(){
         ul.innerHTML = Mustache.render(template, {people: people});
+        debugger;
+        events.emit("peopleChanged", people.length);
     }
     // Initial Rendering
     _render();
@@ -27,6 +60,7 @@ let people = (function () { // IIFE that modularzes code around people
           people.push(person);
           _render();
           input.value = "";
+          
         }
     }
     // Delete function
@@ -42,9 +76,11 @@ let people = (function () { // IIFE that modularzes code around people
         }
         people.splice(index, 1);
         _render();
+       
     }
 
     return {addPerson, deletePerson};
 
 
-})(); 
+})();
+
