@@ -24,6 +24,8 @@ body{
     display: inline;
     background-color: rgba(171, 226, 89, 0.691);
     padding: 0.5em 1.5em 0.5em 1.5em;
+    min-width: 7em;
+    min-height: 3em;
 }
 #people li{
     position: relative;
