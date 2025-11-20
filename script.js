@@ -23,7 +23,7 @@ let people = (function () { // IIFE that modularzes code around people
     // Adding function
     function addPerson(event){
         let person = (typeof event === "string") ? event : input.value;
-        if(person || person.length < 15){
+        if(person && person.length < 15){
           people.push(person);
           _render();
           input.value = "";
